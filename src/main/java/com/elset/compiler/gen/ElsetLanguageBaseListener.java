@@ -1,4 +1,5 @@
-// Generated from D:/yapis\ElsetLanguage.g4 by ANTLR 4.8
+// Generated from D:/yapis\ElsetLanguage.g4 by ANTLR 4.9.2
+
 package com.elset.compiler.gen;
 
 import org.antlr.v4.runtime.ParserRuleContext;
