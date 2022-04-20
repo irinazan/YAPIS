@@ -1,4 +1,4 @@
-// Generated from D:/yapis\ElsetLanguage.g4 by ANTLR 4.8
+// Generated from D:/yapis\ElsetLanguage.g4 by ANTLR 4.9.2
 package com.elset.compiler.gen;
 
 import org.antlr.v4.runtime.*;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class ElsetLanguageParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
