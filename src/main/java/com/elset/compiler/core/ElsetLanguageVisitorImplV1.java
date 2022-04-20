@@ -78,7 +78,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         for (int i = 0; i < list.size(); i++) {
             Variable variable = Preconditions.checkNotNull(register.getVariable(list.get(i).getText()));
             if (variable.getVariableType() != VariableType.ELEMENT) {
-                throw new UnsupportedOperationException();
+                throw new NoSuchElementException();
             }
             out.append(rootID).append(CompilerFields.DELIMITER).append(String.format(CompilerFields.ADD_NEW_ELEMENT, variable.getID())).append(CompilerFields.SEPARATOR);
         }
@@ -146,7 +146,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
             for (int i = 1; i < 2; i++) {
                 Variable variable = Preconditions.checkNotNull(register.getVariable(ctx.intialize_set().ID(i).getText()));
                 if (variable.getVariableType() != VariableType.SET) {
-                    throw new UnsupportedOperationException();
+                    throw new NoSuchElementException();
                 }
             }
             out.append(VariableType.SET.getOutName()).append(" ").append(ctx.ID()).append(CompilerFields.ASSIGN);
@@ -175,7 +175,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
     public String visitOperations(ElsetLanguageParser.OperationsContext ctx) {
         Variable variable = register.getVariable(ctx.ID().toString());
         if (variable == null || variable.getVariableType() != VariableType.INT || variable.isConstant()) {
-            throw new UnsupportedOperationException();
+            throw new IllegalStateException();
         }
         validateDigitExpression(ctx.digit_expression());
         return variable.getID() + CompilerFields.ASSIGN + concatExpr(ctx.digit_expression()) + CompilerFields.SEPARATOR;
