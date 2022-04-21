@@ -1,7 +1,6 @@
-global int var;
 var = 1;
 
-sub_program int sub(int var3)
+sub_program int sub(var3)
     begin
         print(var3);
         return var3;
@@ -10,19 +9,14 @@ sub_program int sub(int var3)
 main_program
     begin
         print(2);
-        int var2;
         var2 = 3;
-        int const var3;
         var3 = call sub(var2);
-        element el;
         el = "elem";
-        set s;
         s = {el, el};
         s.remove(el);
-        set s2;
         s2 = s * s;
         print(s);
-        for (element e : s2)
+        for (e : s2)
             begin
                 print(e);
             end
