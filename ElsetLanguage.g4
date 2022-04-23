@@ -8,6 +8,8 @@ statement :
 assign_var |
 assign_set |
 operations |
+subprogram_return |
+subprogram_non_return |
 assign_var_method_invocation |
 while_cicle |
 if_then |
