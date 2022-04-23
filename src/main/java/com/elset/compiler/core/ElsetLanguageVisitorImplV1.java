@@ -134,7 +134,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         if (ctx.ID() != null) {
             Variable variable = register.getVariable(ctx.ID().toString());
             if (variable == null || variable.getVariableType() != VariableType.INT) {
-                throw new UnsupportedOperationException();
+                throw new ContextException("Invalid digit.");
             }
         }
         List<ElsetLanguageParser.Digit_expressionContext> expr = ctx.digit_expression();
@@ -392,7 +392,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
     public String visitMethod_invokation(ElsetLanguageParser.Method_invokationContext ctx) {
         Method method = register.getRegisteredMethod(ctx.ID().toString());
         if (method == null) {
-            throw new UnsupportedOperationException();
+            throw new ContextEception("Invalid method");
         }
         return method.getID() + " " + handleSignatureOfInvocation(ctx) + CompilerFields.SEPARATOR;
     }
