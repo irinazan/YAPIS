@@ -71,8 +71,8 @@ intialize_set: (K_C_BRACKET K_O_BRACKET)|(K_O_BRACKET (ID ',')* (ID) K_C_BRACKET
 intialize_element: STRING;
 
 assign_var_method_invocation : type CONST? ID '=' method_invokation;
-assign_set : SET CONST? ID '=' (intialize_set) SEPARATOR;
-assign_var : type_1 CONST? ID '=' (digit_expression|intialize_element) SEPARATOR;
+assign_set : CONST? ID '=' (intialize_set) SEPARATOR;
+assign_var : CONST? ID '=' (digit_expression|intialize_element) SEPARATOR;
 print : PRINT O_BRACKET (ID|NUMBER|STRING) C_BRACKET SEPARATOR;
 operations : ID '=' digit_expression SEPARATOR;
 operarions_with_set: ID DELIMITER (ADD|REMOVE) (O_BRACKET ID C_BRACKET) SEPARATOR;
