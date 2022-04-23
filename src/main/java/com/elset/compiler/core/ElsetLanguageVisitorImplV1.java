@@ -28,7 +28,36 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         this.parserV1 = parserV1;
         this.name = name;
     }
+    
+ public class ContextException extends Exception {
 
+	private final ErrorCode code;
+
+	public ContextException(ErrorCode code) {
+		super();
+		this.code = code;
+	    }
+
+	public ContextException(String message, Throwable cause, ErrorCode code) {
+		super(message, cause);
+		this.code = code;
+	    }
+
+	public ContextException(String message, ErrorCode code) {
+		super(message);
+		this.code = code;
+	    }
+
+	public ContextException(Throwable cause, ErrorCode code) {
+		super(cause);
+		this.code = code;
+	    }
+	
+	public ErrorCode getCode() {
+		return this.code;
+	    }
+    }
+    
     @Override
     public String visitProgram(ElsetLanguageParser.ProgramContext ctx) {
         register.registerMethodInvocation();
