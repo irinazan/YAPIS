@@ -13,6 +13,8 @@ subprogram_non_return |
 assign_var_method_invocation |
 while_cicle |
 if_then |
+coroutine_return |
+coroutine_non_return |
 method_invokation |
 print |
 operarions_with_set |
@@ -94,6 +96,8 @@ type_1: INT|ELEMENT;
 signature: (O_BRACKET (type ID ',')* (type ID) C_BRACKET);
 subprogram_return : 'sub_program' type ID (signature|(O_BRACKET C_BRACKET)) block_return;
 subprogram_non_return : 'sub_program' ID (signature|(O_BRACKET C_BRACKET)) (block_non_return|block);
+coroutine_return : 'coroutine' type ID (signature|(O_BRACKET C_BRACKET)) block_return;
+coroutine_non_return : 'coroutine' ID (signature|(O_BRACKET C_BRACKET)) (block_non_return|block);
 
 block_return : BEGIN statement* RETURN ID SEPARATOR END;
 block_non_return : BEGIN statement* RETURN SEPARATOR END;
@@ -101,4 +105,4 @@ block_non_return : BEGIN statement* RETURN SEPARATOR END;
 signature_method_invokation: (O_BRACKET (ID ',')* (ID) C_BRACKET);
 method_invokation : CALL ID (signature_method_invokation|(O_BRACKET C_BRACKET)) SEPARATOR;
 
-global_program: (global_assign_set|global_assign_var)*(subprogram_non_return|subprogram_return)*program{1};
+global_program: (global_assign_set|global_assign_var)*(subprogram_non_return|subprogram_return)*(coroutine_non_return|coroutine_return)*program{1};
