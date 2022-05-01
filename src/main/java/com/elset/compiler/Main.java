@@ -24,6 +24,13 @@ public class Main {
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ParseTree tree = parser.global_program();
+         try (CoroutineService coroutine = Coroutines.newVirtualThreadExecutor()) {
+                coroutine.submit(() -> {
+                    try { Thread.sleep(500); } catch (InterruptedException e) { }
+                    System.out.println("Coroutine 1");
+                });
+                System.out.println("Coroutine 2");
+            }  
             if (!byteArrayOutputStream.toString().equalsIgnoreCase("")) {
                 JOptionPane.showMessageDialog(null, "Lexer error: " + byteArrayOutputStream.toString());
                 return;
