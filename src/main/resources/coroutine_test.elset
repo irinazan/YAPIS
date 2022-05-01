@@ -1,0 +1,27 @@
+static char caller_context;
+static char coroutine_context;
+
+sub_program void print_hello_and_suspend()
+    begin
+        print("Hello");
+        coroutine_context = caller_context;
+    end
+
+coroutine void simple_coroutine()
+    begin
+        print_hello_and_suspend();
+        print("Coroutine!");
+    end
+
+main_program
+    begin
+       char stack[256];
+       coroutine_context = stack;
+       getcontext(coroutine_context);
+       // Заполнение coroutine_context
+       makecontext(coroutine_context, simple_coroutine, 0);
+       caller_context = coroutine_context;
+       print(" ");
+       // передаём управление обратно сопрограмме.
+       caller_context = coroutine_context;
+    end
