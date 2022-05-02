@@ -35,6 +35,8 @@ IF : 'if';
 THEN : 'then';
 CALL : 'call';
 RETURN : 'return';
+COROUTINE: 'coroutine';
+YIELD: 'yield';
 SEPARATOR : ';';
 DELIMITER : '.';
 COLON : ':';
