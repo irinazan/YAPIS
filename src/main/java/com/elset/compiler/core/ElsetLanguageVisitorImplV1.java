@@ -23,6 +23,8 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
     private final ElsetLanguageParserV1 parserV1;
     private final VariableAndMethodRegister register = new VariableAndMethodRegister();
     private final String name;
+    private int yieldCount;
+    private boolean coroutineCheck;
 
     public ElsetLanguageVisitorImplV1(ElsetLanguageParserV1 parserV1, String name) {
         this.parserV1 = parserV1;
@@ -338,6 +340,40 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         register.registerMethodInvocationEnded();
         return s;
     }
+	
+	
+	
+	@Override
+    public String visitCoroutine_return(ElsetLanguageParser.Coroutine_returnContext ctx) {
+        Method method = register.getRegisteredMethod(ctx.ID().toString());
+        if (method == null || method.getMethodType() == MethodType.RETURN_OPTIONAL) {
+            throw new UnsupportedOperationException();
+        }
+        register.registerMethodInvocation();
+	yieldCount = 0;
+	coroutineCheck = true;    
+        //NPE checked before.
+        String s = CompilerFields.COROUTINE + method.getMethodType().getReturnedType().getOutName()
+                + " " + ctx.ID() + ctx.signature().accept(this) + ctx.block_return().accept(this);
+        register.registerMethodInvocationEnded();
+        return s;
+    }
+
+    @Override
+    public String visitCoroutine_non_return(ElsetLanguageParser.Coroutinem_non_returnContext ctx) {
+        Method method = register.getRegisteredMethod(ctx.ID().toString());
+        if (method == null || method.getMethodType() != MethodType.RETURN_OPTIONAL) {
+            throw new UnsupportedOperationException();
+        }
+        register.registerMethodInvocation();
+	yieldCount = 0;
+	coroutineCheck = true;        
+        String s = CompilerFields.COROUTINE + CompilerFields.VOID + " " + ctx.ID() + handleSignature(ctx.signature());
+        s += ctx.block_non_return() == null ? ctx.block().accept(this) : ctx.block_non_return().accept(this);
+        register.registerMethodInvocationEnded();
+        return s;
+    }
+	
 
     private String handleSignature(ElsetLanguageParser.SignatureContext ctx) {
         return ctx == null ? CompilerFields.OPEN_BRACKET + CompilerFields.CLOSE_BRACKET : ctx.accept(this);
