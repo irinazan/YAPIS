@@ -5,6 +5,8 @@ import com.elset.compiler.core.ElsetLanguageVisitorImplV1;
 import com.elset.compiler.gen.ElsetLanguageLexer;
 import com.elset.compiler.gen.ElsetLanguageVisitor;
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -12,6 +14,7 @@ import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
 
@@ -24,12 +27,12 @@ public class Main {
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ParseTree tree = parser.global_program();
-         try (CoroutineService coroutine = Coroutines.newVirtualThreadExecutor()) {
-                coroutine.submit(() -> {
-                    try { Thread.sleep(500); } catch (InterruptedException e) { }
-                    System.out.println("Coroutine 1");
-                });
-                System.out.println("Coroutine 2");
+         
+            CharStream inputStream = null;
+                try {
+                inputStream = CharStreams.fromFileName("src/main/resources/coroutine_test.elset");
+                } catch (IOException e) {
+                e.printStackTrace();
             }  
             if (!byteArrayOutputStream.toString().equalsIgnoreCase("")) {
                 JOptionPane.showMessageDialog(null, "Lexer error: " + byteArrayOutputStream.toString());
