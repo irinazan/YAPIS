@@ -450,6 +450,8 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         register.registerMethod(new Method(CompilerFields.MAIN_PROGRAM, MethodType.RETURN_OPTIONAL, Collections.emptyList()));
         List<ElsetLanguageParser.Subprogram_non_returnContext> non_returnContexts = ctx.subprogram_non_return();
         List<ElsetLanguageParser.Subprogram_returnContext> returnContexts = ctx.subprogram_return();
+	List<ElsetLanguageParser.Coroutine_non_returnContext> non_returnContexts = ctx.coroutine_non_return();
+        List<ElsetLanguageParser.Coroutine_returnContext> returnContexts = ctx.coroutine_return();    
         for (ElsetLanguageParser.Global_assign_varContext ct : ctx.global_assign_var()) {
             out.append(ct.accept(this));
         }
@@ -465,6 +467,15 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
             register.registerMethod(new Method(ct.ID().toString(), MethodType.RETURN_OPTIONAL, collectMethodArguments(ct.signature())));
             out.append(ct.accept(this));
         }
+	for (ElsetLanguageParser.Coroutine_returnContext ct : returnContexts) {
+            VariableType variableType = Preconditions.checkNotNull(VariableType.findByDisplayName(ct.type().getText()));
+            register.registerMethod(new Method(ct.ID().toString(), Preconditions.checkNotNull(MethodType.findByReturnedType(variableType)), collectMethodArguments(ct.signature())));
+            out.append(ct.accept(this));
+        }
+        for (ElsetLanguageParser.Coroutinem_non_returnContext ct : non_returnContexts) {
+            register.registerMethod(new Method(ct.ID().toString(), MethodType.RETURN_OPTIONAL, collectMethodArguments(ct.signature())));
+            out.append(ct.accept(this));
+        }    
         out.append(ctx.program().accept(this));
         return out.toString();
     }
