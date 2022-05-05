@@ -16,6 +16,7 @@ if_then |
 coroutine_return |
 coroutine_non_return |
 method_invokation |
+yield_function |
 print |
 operarions_with_set |
 for_each;
@@ -82,6 +83,7 @@ assign_var : CONST? ID '=' (digit_expression|intialize_element) SEPARATOR;
 print : PRINT O_BRACKET (ID|NUMBER|STRING) C_BRACKET SEPARATOR;
 operations : ID '=' digit_expression SEPARATOR;
 operarions_with_set: ID DELIMITER (ADD|REMOVE) (O_BRACKET ID C_BRACKET) SEPARATOR;
+yield_function : YIELD O_BRACKET (ID|NUMBER|STRING) C_BRACKET SEPARATOR;
 
 simple_compare : (digit_expression) (EQUAL|NON_EQUAL|LESS|GREATER|LESS_OR_EQUALS|GREATER_OR_EQUALS) (digit_expression);
 hard_compare : NEGATION? O_BRACKET simple_compare C_BRACKET;
