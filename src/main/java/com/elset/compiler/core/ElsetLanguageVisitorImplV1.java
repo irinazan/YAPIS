@@ -341,21 +341,50 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         return s;
     }
 	
-	
-	
 	@Override
     public String visitCoroutine_return(ElsetLanguageParser.Coroutine_returnContext ctx) {
+	
+	argumentNumber = 0;
+	yieldCount = 0;
+	coroutineCheck = true;  
+	String out = CompilerFields.COROUTINE + CompilerFields.VOID + " " + ctx.ID() + handleSignature;
+
+	String template = "template <";
+	String variable = "int state = 0;";
+	    
         Method method = register.getRegisteredMethod(ctx.ID().toString());
         if (method == null || method.getMethodType() == MethodType.RETURN_OPTIONAL) {
             throw new UnsupportedOperationException();
         }
         register.registerMethodInvocation();
-	yieldCount = 0;
-	coroutineCheck = true;    
+	
+ 	
+	String states = "switch(state){" + "case 0:" + "goto start;";
+        for (int i = 0; i < yieldCount - 1; i++) {
+            states += "case " + (i + 1) + ":" + "goto state" + i + ";";
+        }
+        states += "default:throw std::runtime_error(\"Coroutine is over\");";
+        states += "}" + "start:;";    
+	    
         //NPE checked before.
         String s = CompilerFields.COROUTINE + method.getMethodType().getReturnedType().getOutName()
                 + " " + ctx.ID() + ctx.signature().accept(this) + ctx.block_return().accept(this);
         register.registerMethodInvocationEnded();
+	    
+	int p = getID("{");
+        s = s.substring(0, p) +
+                "{" +
+                defVariables +
+                "public:" +
+                constructor +
+                "auto next() {" +
+                states +
+                s.substring(p + 1) +
+                "};";
+	    
+	 if (argumentNumber != 0) {
+            s = template.substring(0, template.length() - 2) + ">" + out;
+        }    
         return s;
     }
 
@@ -374,7 +403,17 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         return s;
     }
 	
-
+    @Override
+    public String visitYield(ElsetLanguageParser.YieldContext ctx) {
+        if (!coroutineCheck) {
+            throw new ContextException("Yield is not applicable.");
+        }
+     String s = "state++;";
+     s += "state" + yieldCount + ":;";
+     yieldCount++;
+     return s;
+    }
+	
     private String handleSignature(ElsetLanguageParser.SignatureContext ctx) {
         return ctx == null ? CompilerFields.OPEN_BRACKET + CompilerFields.CLOSE_BRACKET : ctx.accept(this);
     }
