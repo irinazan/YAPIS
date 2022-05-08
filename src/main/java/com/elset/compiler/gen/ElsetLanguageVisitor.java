@@ -167,7 +167,7 @@ public interface ElsetLanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCoroutine_non_return(ElsetLanguageParser.Coroutine_non_returnContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link ElsetLanguageParser#yield}.
+	 * Visit a parse tree produced by {@link ElsetLanguageParser#yield_return}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */

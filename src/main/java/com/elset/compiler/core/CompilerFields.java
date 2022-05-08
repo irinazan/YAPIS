@@ -12,6 +12,8 @@ public class CompilerFields {
     public static final String MAIN_METHOD = "private static void main_program () ";
     public static final String GLOBAL_VAR = "private static ";
     public static final String SUB_METHOD = "private static ";
+    public static final String COROUTINE = "private static ";
+    public static final String YIELD = "private static ";
     public static final String VOID = "void";
     public static final String COMMA = ",";
     public static final String RETURN = "return";

@@ -300,6 +300,37 @@ public class ElsetLanguageBaseListener implements ElsetLanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSubprogram_non_return(ElsetLanguageParser.Subprogram_non_returnContext ctx) { }
+
+	@Override
+	public void enterCoroutine_return(ElsetLanguageParser.Coroutine_returnContext ctx) {
+
+	}
+
+	@Override
+	public void exitCoroutine_return(ElsetLanguageParser.Coroutine_returnContext ctx) {
+
+	}
+
+	@Override
+	public void enterCoroutine_non_return(ElsetLanguageParser.Coroutine_non_returnContext ctx) {
+
+	}
+
+	@Override
+	public void exitCoroutine_non_return(ElsetLanguageParser.Coroutine_non_returnContext ctx) {
+
+	}
+
+	@Override
+	public void enterYield(ElsetLanguageParser.YieldContext ctx) {
+
+	}
+
+	@Override
+	public void exitYield(ElsetLanguageParser.YieldContext ctx) {
+
+	}
+
 	/**
 	 * {@inheritDoc}
 	 *
