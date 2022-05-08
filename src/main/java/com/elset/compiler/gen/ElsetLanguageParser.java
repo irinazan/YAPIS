@@ -15,7 +15,7 @@ import java.util.List;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class ElsetLanguageParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -36,23 +36,23 @@ public class ElsetLanguageParser extends Parser {
 		RULE_global_assign_var = 18, RULE_type = 19, RULE_type_1 = 20, RULE_signature = 21, 
 		RULE_subprogram_return = 22, RULE_subprogram_non_return = 23, RULE_block_return = 24, 
 		RULE_block_non_return = 25, RULE_signature_method_invokation = 26, RULE_method_invokation = 27, 
-		RULE_global_program = 28;
+		RULE_global_program = 28, RULE_coroutine_return = 29, RULE_coroutine_non_return = 30, RULE_yield = 31;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"program", "block", "statement", "digit_expression", "intialize_set", 
 			"intialize_element", "assign_var_method_invocation", "assign_set", "assign_var", 
 			"print", "operations", "operarions_with_set", "simple_compare", "hard_compare", 
 			"while_cicle", "if_then", "for_each", "global_assign_set", "global_assign_var", 
-			"type", "type_1", "signature", "subprogram_return", "subprogram_non_return", 
+			"type", "type_1", "signature", "subprogram_return", "subprogram_non_return", "coroutine_return", "coroutine_non_return", "yield",
 			"block_return", "block_non_return", "signature_method_invokation", "method_invokation", 
 			"global_program"
 		};
 	}
-	public static final String[] ruleNames = makeRuleNames();
+	//public static final ElsetLanguageVisitor<String> ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'main_program'", "','", "'='", "'sub_program'", "'begin'", "'set'", 
+			null, "'main_program'", "','", "'='", "'sub_program'", "'coroutine'", "'yield'", "'begin'", "'set'",
 			"'element'", "'add'", "'remove'", "'end'", "'print'", "'int'", "'while'", 
 			"'for'", "'const'", "'if'", "'then'", "'call'", "'return'", "';'", "'.'", 
 			"':'", "'global'", null, null, null, null, "'+'", "'-'", "'*'", "'/'", 
@@ -100,6 +100,11 @@ public class ElsetLanguageParser extends Parser {
 	}
 
 	@Override
+	public String[] getRuleNames() {
+		return makeRuleNames();
+	}
+
+	@Override
 
 	public Vocabulary getVocabulary() {
 		return VOCABULARY;
@@ -108,8 +113,8 @@ public class ElsetLanguageParser extends Parser {
 	@Override
 	public String getGrammarFileName() { return "ElsetLanguage.g4"; }
 
-	@Override
-	public String[] getRuleNames() { return ruleNames; }
+	//@Override
+	//public String[] getRuleNames() { return ruleNames; }
 
 	@Override
 	public String getSerializedATN() { return _serializedATN; }
@@ -1911,6 +1916,272 @@ public class ElsetLanguageParser extends Parser {
 		return _localctx;
 	}
 
+
+	/////////////////////////////////////////////////////////////////
+	public static class Coroutine_returnContext extends ParserRuleContext {
+		public TypeContext type() {
+			return getRuleContext(TypeContext.class,0);
+		}
+		public TerminalNode ID() { return getToken(ElsetLanguageParser.ID, 0); }
+		public Block_returnContext block_return() {
+			return getRuleContext(Block_returnContext.class,0);
+		}
+		public SignatureContext signature() {
+			return getRuleContext(SignatureContext.class,0);
+		}
+		public TerminalNode O_BRACKET() { return getToken(ElsetLanguageParser.O_BRACKET, 0); }
+		public TerminalNode C_BRACKET() { return getToken(ElsetLanguageParser.C_BRACKET, 0); }
+		public Coroutine_returnContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_coroutine_return; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ElsetLanguageListener ) ((ElsetLanguageListener)listener).enterCoroutine_return(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ElsetLanguageListener ) ((ElsetLanguageListener)listener).exitCoroutine_return(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ElsetLanguageVisitor ) return ((ElsetLanguageVisitor<? extends T>)visitor).visitCoroutine_return(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final Coroutine_returnContext coroutine_return() throws RecognitionException {
+		Coroutine_returnContext _localctx = new Coroutine_returnContext(_ctx, getState());
+		enterRule(_localctx, 44, RULE_coroutine_return);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+				setState(235);
+				match(T__3);
+				setState(236);
+				type();
+				setState(237);
+				match(ID);
+				setState(241);
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
+					case 1:
+					{
+						setState(238);
+						signature();
+					}
+					break;
+					case 2:
+					{
+						{
+							setState(239);
+							match(O_BRACKET);
+							setState(240);
+							match(C_BRACKET);
+						}
+					}
+					break;
+				}
+				setState(243);
+				block_return();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Coroutine_non_returnContext extends ParserRuleContext {
+		public TerminalNode ID() { return getToken(ElsetLanguageParser.ID, 0); }
+		public SignatureContext signature() {
+			return getRuleContext(SignatureContext.class,0);
+		}
+		public Block_non_returnContext block_non_return() {
+			return getRuleContext(Block_non_returnContext.class,0);
+		}
+		public BlockContext block() {
+			return getRuleContext(BlockContext.class,0);
+		}
+		public TerminalNode O_BRACKET() { return getToken(ElsetLanguageParser.O_BRACKET, 0); }
+		public TerminalNode C_BRACKET() { return getToken(ElsetLanguageParser.C_BRACKET, 0); }
+		public Coroutine_non_returnContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_coroutine_non_return; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ElsetLanguageListener ) ((ElsetLanguageListener)listener).enterCoroutine_non_return(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ElsetLanguageListener ) ((ElsetLanguageListener)listener).exitCoroutine_non_return(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ElsetLanguageVisitor ) return ((ElsetLanguageVisitor<? extends T>)visitor).visitCoroutine_non_return(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final Coroutine_non_returnContext coroutine_non_return() throws RecognitionException {
+		Coroutine_non_returnContext _localctx = new Coroutine_non_returnContext(_ctx, getState());
+		enterRule(_localctx, 46, RULE_coroutine_non_return);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+				setState(245);
+				match(T__3);
+				setState(246);
+				match(ID);
+				setState(250);
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
+					case 1:
+					{
+						setState(247);
+						signature();
+					}
+					break;
+					case 2:
+					{
+						{
+							setState(248);
+							match(O_BRACKET);
+							setState(249);
+							match(C_BRACKET);
+						}
+					}
+					break;
+				}
+				setState(254);
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+					case 1:
+					{
+						setState(252);
+						block_non_return();
+					}
+					break;
+					case 2:
+					{
+						setState(253);
+						block();
+					}
+					break;
+				}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+	///////////////////////////////////////////////////////////////////
+	public static class YieldContext extends ParserRuleContext {
+		public TerminalNode ID() { return getToken(ElsetLanguageParser.ID, 0); }
+		public SignatureContext signature() {
+			return getRuleContext(SignatureContext.class,0);
+		}
+		public Block_non_returnContext block_non_return() {
+			return getRuleContext(Block_non_returnContext.class,0);
+		}
+		public BlockContext block() {
+			return getRuleContext(BlockContext.class,0);
+		}
+		public TerminalNode O_BRACKET() { return getToken(ElsetLanguageParser.O_BRACKET, 0); }
+		public TerminalNode C_BRACKET() { return getToken(ElsetLanguageParser.C_BRACKET, 0); }
+		public YieldContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_yield; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof ElsetLanguageListener ) ((ElsetLanguageListener)listener).enterYield(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof ElsetLanguageListener ) ((ElsetLanguageListener)listener).exitYield(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof ElsetLanguageVisitor ) return ((ElsetLanguageVisitor<? extends T>)visitor).visitYield(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final YieldContext yield() throws RecognitionException {
+		YieldContext _localctx = new YieldContext(_ctx, getState());
+		enterRule(_localctx, 46, RULE_yield);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+				setState(245);
+				match(T__3);
+				setState(246);
+				match(ID);
+				setState(250);
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
+					case 1:
+					{
+						setState(247);
+						signature();
+					}
+					break;
+					case 2:
+					{
+						{
+							setState(248);
+							match(O_BRACKET);
+							setState(249);
+							match(C_BRACKET);
+						}
+					}
+					break;
+				}
+				setState(254);
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+					case 1:
+					{
+						setState(252);
+						block_non_return();
+					}
+					break;
+					case 2:
+					{
+						setState(253);
+						block();
+					}
+					break;
+				}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
 	public static class Block_returnContext extends ParserRuleContext {
 		public TerminalNode BEGIN() { return getToken(ElsetLanguageParser.BEGIN, 0); }
 		public TerminalNode RETURN() { return getToken(ElsetLanguageParser.RETURN, 0); }
@@ -2227,6 +2498,30 @@ public class ElsetLanguageParser extends Parser {
 		public Subprogram_non_returnContext subprogram_non_return(int i) {
 			return getRuleContext(Subprogram_non_returnContext.class,i);
 		}
+		///////////
+		public List<Coroutine_non_returnContext> coroutine_non_return() {
+			return getRuleContexts(Coroutine_non_returnContext.class);
+		}
+		public Coroutine_non_returnContext coroutine_non_return(int i) {
+			return getRuleContext(Coroutine_non_returnContext.class,i);
+		}
+
+		public List<Coroutine_returnContext> coroutine_return() {
+			return getRuleContexts(Coroutine_returnContext.class);
+		}
+		public Coroutine_returnContext coroutine_return(int i) {
+			return getRuleContext(Coroutine_returnContext.class,i);
+		}
+
+
+		public List<YieldContext> yield_return() {
+			return getRuleContexts(YieldContext.class);
+		}
+		public YieldContext yield_return(int i) {
+			return getRuleContext(YieldContext.class,i);
+		}
+
+		/////////
 		public List<Subprogram_returnContext> subprogram_return() {
 			return getRuleContexts(Subprogram_returnContext.class);
 		}

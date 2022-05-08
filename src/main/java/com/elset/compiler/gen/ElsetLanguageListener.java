@@ -251,6 +251,53 @@ public interface ElsetLanguageListener extends ParseTreeListener {
 	 * Enter a parse tree produced by {@link ElsetLanguageParser#block_return}.
 	 * @param ctx the parse tree
 	 */
+
+
+
+	////////////////////////////
+	void enterCoroutine_return(ElsetLanguageParser.Coroutine_returnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ElsetLanguageParser#coroutine_return}.
+	 * @param ctx the parse tree
+	 */
+	void exitCoroutine_return(ElsetLanguageParser.Coroutine_returnContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ElsetLanguageParser#block_return}.
+	 * @param ctx the parse tree
+	 */
+
+	void enterCoroutine_non_return(ElsetLanguageParser.Coroutine_non_returnContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ElsetLanguageParser#coroutine_non_return}.
+	 * @param ctx the parse tree
+	 */
+	void exitCoroutine_non_return(ElsetLanguageParser.Coroutine_non_returnContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ElsetLanguageParser#block_return}.
+	 * @param ctx the parse tree
+	 */
+
+	void enterYield(ElsetLanguageParser.YieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ElsetLanguageParser#yield_return}.
+	 * @param ctx the parse tree
+	 */
+	void exitYield(ElsetLanguageParser.YieldContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ElsetLanguageParser#block_return}.
+	 * @param ctx the parse tree
+	 */
+
+	////////////////
+
+
+
+
+
+
+
+
+
 	void enterBlock_return(ElsetLanguageParser.Block_returnContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link ElsetLanguageParser#block_return}.

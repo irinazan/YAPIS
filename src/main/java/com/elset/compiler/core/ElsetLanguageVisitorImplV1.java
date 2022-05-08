@@ -31,7 +31,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         this.name = name;
     }
     
- public class ContextException extends Exception {
+ /*public class ContextException extends Exception {
 
 	private final ErrorCode code;
 
@@ -58,7 +58,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
 	public ErrorCode getCode() {
 		return this.code;
 	    }
-    }
+    }*/
     
     @Override
     public String visitProgram(ElsetLanguageParser.ProgramContext ctx) {
@@ -109,7 +109,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         for (int i = 0; i < list.size(); i++) {
             Variable variable = Preconditions.checkNotNull(register.getVariable(list.get(i).getText()));
             if (variable.getVariableType() != VariableType.ELEMENT) {
-                throw new NoSuchElementException();
+                //throw new NoSuchElementException();
             }
             out.append(rootID).append(CompilerFields.DELIMITER).append(String.format(CompilerFields.ADD_NEW_ELEMENT, variable.getID())).append(CompilerFields.SEPARATOR);
         }
@@ -136,7 +136,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         if (ctx.ID() != null) {
             Variable variable = register.getVariable(ctx.ID().toString());
             if (variable == null || variable.getVariableType() != VariableType.INT) {
-                throw new ContextException("Invalid digit.");
+                //throw new ContextException("Invalid digit.");
             }
         }
         List<ElsetLanguageParser.Digit_expressionContext> expr = ctx.digit_expression();
@@ -177,7 +177,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
             for (int i = 1; i < 2; i++) {
                 Variable variable = Preconditions.checkNotNull(register.getVariable(ctx.intialize_set().ID(i).getText()));
                 if (variable.getVariableType() != VariableType.SET) {
-                    throw new NoSuchElementException();
+                    //throw new NoSuchElementException();
                 }
             }
             out.append(VariableType.SET.getOutName()).append(" ").append(ctx.ID()).append(CompilerFields.ASSIGN);
@@ -344,10 +344,10 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
 	@Override
     public String visitCoroutine_return(ElsetLanguageParser.Coroutine_returnContext ctx) {
 	
-	argumentNumber = 0;
+	int argumentNumber = 0;
 	yieldCount = 0;
 	coroutineCheck = true;  
-	String out = CompilerFields.COROUTINE + CompilerFields.VOID + " " + ctx.ID() + handleSignature;
+	String out = CompilerFields.COROUTINE + CompilerFields.VOID;
 
 	String template = "template <";
 	String variable = "int state = 0;";
@@ -368,10 +368,10 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
 	    
         //NPE checked before.
         String s = CompilerFields.COROUTINE + method.getMethodType().getReturnedType().getOutName()
-                + " " + ctx.ID() + ctx.signature().accept(this) + ctx.block_return().accept(this);
+               /* + " " + ctx.ID() + ctx.signature().accept(this) + ctx.block_return().accept(this)*/;
         register.registerMethodInvocationEnded();
 	    
-	int p = getID("{");
+	/*int p = getID("{");
         s = s.substring(0, p) +
                 "{" +
                 defVariables +
@@ -380,7 +380,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
                 "auto next() {" +
                 states +
                 s.substring(p + 1) +
-                "};";
+                "};";*/
 	    
 	 if (argumentNumber != 0) {
             s = template.substring(0, template.length() - 2) + ">" + out;
@@ -389,7 +389,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
     }
 
     @Override
-    public String visitCoroutine_non_return(ElsetLanguageParser.Coroutinem_non_returnContext ctx) {
+    public String visitCoroutine_non_return(ElsetLanguageParser.Coroutine_non_returnContext ctx) {
         Method method = register.getRegisteredMethod(ctx.ID().toString());
         if (method == null || method.getMethodType() != MethodType.RETURN_OPTIONAL) {
             throw new UnsupportedOperationException();
@@ -397,8 +397,10 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         register.registerMethodInvocation();
 	yieldCount = 0;
 	coroutineCheck = true;        
-        String s = CompilerFields.COROUTINE + CompilerFields.VOID + " " + ctx.ID() + handleSignature(ctx.signature());
-        s += ctx.block_non_return() == null ? ctx.block().accept(this) : ctx.block_non_return().accept(this);
+        String s = CompilerFields.COROUTINE + CompilerFields.VOID /*+ " " + ctx.ID() + handleSignature(ctx.signature())*/;
+        //s += ctx.block_non_return() == null ? ctx.block().accept(this) : ctx.block_non_return().accept(this);
+        String template = "template <";
+        s += template.substring(0, template.length() - 2) + ">";
         register.registerMethodInvocationEnded();
         return s;
     }
@@ -406,7 +408,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
     @Override
     public String visitYield(ElsetLanguageParser.YieldContext ctx) {
         if (!coroutineCheck) {
-            throw new ContextException("Yield is not applicable.");
+            //throw new ContextException("Yield is not applicable.");
         }
      String s = "state++;";
      s += "state" + yieldCount + ":;";
@@ -467,7 +469,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
     public String visitMethod_invokation(ElsetLanguageParser.Method_invokationContext ctx) {
         Method method = register.getRegisteredMethod(ctx.ID().toString());
         if (method == null) {
-            throw new ContextEception("Invalid method");
+            //throw new ContextEception("Invalid method");
         }
         return method.getID() + " " + handleSignatureOfInvocation(ctx) + CompilerFields.SEPARATOR;
     }
@@ -489,8 +491,9 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
         register.registerMethod(new Method(CompilerFields.MAIN_PROGRAM, MethodType.RETURN_OPTIONAL, Collections.emptyList()));
         List<ElsetLanguageParser.Subprogram_non_returnContext> non_returnContexts = ctx.subprogram_non_return();
         List<ElsetLanguageParser.Subprogram_returnContext> returnContexts = ctx.subprogram_return();
-	List<ElsetLanguageParser.Coroutine_non_returnContext> non_returnContexts = ctx.coroutine_non_return();
-        List<ElsetLanguageParser.Coroutine_returnContext> returnContexts = ctx.coroutine_return();    
+	    List<ElsetLanguageParser.Coroutine_non_returnContext> coroutine_non_returnContexts = ctx.coroutine_non_return();
+        List<ElsetLanguageParser.Coroutine_returnContext> coroutine_returnContexts = ctx.coroutine_return();
+        List<ElsetLanguageParser.YieldContext> yieldContexts = ctx.yield_return();
         for (ElsetLanguageParser.Global_assign_varContext ct : ctx.global_assign_var()) {
             out.append(ct.accept(this));
         }
@@ -506,15 +509,19 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
             register.registerMethod(new Method(ct.ID().toString(), MethodType.RETURN_OPTIONAL, collectMethodArguments(ct.signature())));
             out.append(ct.accept(this));
         }
-	for (ElsetLanguageParser.Coroutine_returnContext ct : returnContexts) {
+	    for (ElsetLanguageParser.Coroutine_returnContext ct : coroutine_returnContexts) {
             VariableType variableType = Preconditions.checkNotNull(VariableType.findByDisplayName(ct.type().getText()));
             register.registerMethod(new Method(ct.ID().toString(), Preconditions.checkNotNull(MethodType.findByReturnedType(variableType)), collectMethodArguments(ct.signature())));
             out.append(ct.accept(this));
         }
-        for (ElsetLanguageParser.Coroutinem_non_returnContext ct : non_returnContexts) {
+        for (ElsetLanguageParser.Coroutine_non_returnContext ct : coroutine_non_returnContexts) {
             register.registerMethod(new Method(ct.ID().toString(), MethodType.RETURN_OPTIONAL, collectMethodArguments(ct.signature())));
             out.append(ct.accept(this));
-        }    
+        }
+        for (ElsetLanguageParser.YieldContext ct : yieldContexts) {
+            register.registerMethod(new Method(ct.ID().toString(), MethodType.RETURN_OPTIONAL, collectMethodArguments(ct.signature())));
+            out.append(ct.accept(this));
+        }
         out.append(ctx.program().accept(this));
         return out.toString();
     }
@@ -534,7 +541,7 @@ public class ElsetLanguageVisitorImplV1 implements ElsetLanguageVisitor<String> 
     @Override
     public String visit(ParseTree parseTree) {
         String out = parseTree.accept(this);
-        System.out.println(out);
+//        System.out.println(out);
         return String.format(CompilerFields.STATIC_CONTENT, name, out);
     }
 
