@@ -1,6 +1,47 @@
 Для исходного кода программы coroutine_test.elset:
 
 Результирующий код:
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Iterator;
+
+public class RunProgram {
+public static void main (String[] args){
+try{
+main_program();} catch (Exception ex){ex.printStackTrace();}
+}
+
+private static int ONE=1;
+private static int TEN=10;
+private static int first_coroutine(int a, b){
+System.out.println(1);
+yield(-1);
+System.out.println(2);
+yield(-1);
+System.out.println(String.valueOf(a));
+System.out.println(String.valueOf(b));
+yield(-1);
+return a;
+}
+private static int second_coroutine(){
+int var=1;
+yield(-2);
+return var;
+}
+private static void main_program () {
+int a=1;
+int b=10;
+int c=first_coroutine (a, b);
+System.out.println(String.valueOf(c));
+System.out.println(String.valueOf(c));
+System.out.println(String.valueOf(c));
+System.out.println(String.valueOf(c));
+System.out.println(String.valueOf(c));
+int d=second_coroutine;
+System.out.println(String.valueOf(d));
+}
+}
+
 class Element {
 
     private final String data;
